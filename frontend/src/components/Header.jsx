@@ -13,7 +13,9 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 
-const pages = ["Products", "Pricing", "Blog"];
+const pagesManager = ["My Employees", "My Schedules", "My Requests"];
+const pagesEmployee = ["My Schedules", "My Requests"];
+const pagesLoggedOut = ["Key Features", "Pricing", "Testimonial", "FAQ"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 const ResponsiveAppBar = () => {
@@ -87,7 +89,7 @@ const ResponsiveAppBar = () => {
                 display: { xs: "block", md: "none" },
               }}
             >
-              {pages.map((page) => (
+              {pagesLoggedOut.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
                   <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
@@ -114,7 +116,7 @@ const ResponsiveAppBar = () => {
             LOGO
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
+            {pagesLoggedOut.map((page) => (
               <Button
                 key={page}
                 onClick={handleCloseNavMenu}
