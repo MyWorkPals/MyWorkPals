@@ -12,13 +12,24 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
+import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 
-const pagesManager = ["My Employees", "My Schedules", "My Requests"];
-const pagesEmployee = ["My Schedules", "My Requests"];
-const pagesLoggedOut = ["Key Features", "Pricing", "Testimonial", "FAQ"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const Header = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
 
-const ResponsiveAppBar = () => {
+  const pagesManager = ["My Employees", "My Schedules", "My Requests"];
+  const pagesEmployee = ["My Schedules", "My Requests"];
+  const pagesLoggedOut = ["Key Features", "Pricing", "Testimonial", "FAQ"];
+  const settings = ["Profile", "Account", "Dashboard", "Logout"];
+  const pages = !user
+    ? pagesLoggedOut
+    : user.role === "Manager"
+    ? pagesManager
+    : pagesEmployee;
+
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -89,7 +100,7 @@ const ResponsiveAppBar = () => {
                 display: { xs: "block", md: "none" },
               }}
             >
-              {pagesLoggedOut.map((page) => (
+              {pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
                   <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
@@ -116,7 +127,7 @@ const ResponsiveAppBar = () => {
             LOGO
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pagesLoggedOut.map((page) => (
+            {pages.map((page) => (
               <Button
                 key={page}
                 onClick={handleCloseNavMenu}
@@ -161,4 +172,4 @@ const ResponsiveAppBar = () => {
     </AppBar>
   );
 };
-export default ResponsiveAppBar;
+export default Header;
