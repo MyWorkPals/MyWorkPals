@@ -49,6 +49,14 @@ const Header = () => {
     setAnchorElUser(null);
   };
 
+  const toLogin = () => {
+    navigate("/login");
+  };
+
+  const toRegister = () => {
+    navigate("/register");
+  };
+
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -175,10 +183,14 @@ const Header = () => {
               </>
             ) : (
               <Stack direction={"row"} spacing={3}>
-                <Button variant="contained" color="secondary">
+                <Button variant="contained" color="secondary" onClick={toLogin}>
                   Login
                 </Button>
-                <Button variant="contained" color="secondary">
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={toRegister}
+                >
                   Sign Up
                 </Button>
               </Stack>
