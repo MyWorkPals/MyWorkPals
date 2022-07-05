@@ -13,12 +13,11 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import { useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { Stack } from "@mui/material";
 
 const Header = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
 
   const pagesManager = ["My Employees", "My Schedules", "My Requests"];
@@ -27,7 +26,7 @@ const Header = () => {
   const settings = ["My Profile", "Logout"];
   const pages = !user
     ? pagesLoggedOut
-    : user.role === "Manager"
+    : user.role === "manager"
     ? pagesManager
     : pagesEmployee;
 
