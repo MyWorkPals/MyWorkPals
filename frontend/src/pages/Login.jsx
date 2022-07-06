@@ -9,6 +9,7 @@ import { Container } from "@mui/system";
 import { Stack } from "@mui/material";
 import { login, reset } from "../features/auth/authSlice";
 import { useState } from "react";
+import FormInput from "../components/formComponents/FormInput";
 
 const Login = () => {
   const { handleSubmit, control } = useForm();
@@ -43,7 +44,7 @@ const Login = () => {
     dispatch(login(data));
   };
 
-  const handleBack = () => {
+  const toRegister = () => {
     navigate("/register");
   };
 
@@ -58,50 +59,15 @@ const Login = () => {
       />
       <form onSubmit={handleSubmit(onSubmit)}>
         <Stack spacing={2}>
-          <Controller
-            name="email"
-            control={control}
-            defaultValue=""
-            render={({ field: { onChange, value }, fieldState: { error } }) => (
-              <TextField
-                label="Email"
-                variant="outlined"
-                value={value}
-                onChange={onChange}
-                error={!!error}
-                helperText={error ? error.message : null}
-                type="email"
-              />
-            )}
-            rules={{ required: "Email required" }}
-          />
+          <FormInput name={"email"} control={control} label={"Email"} />
+          <FormInput name={"password"} control={control} label={"Password"} />
 
-          <Controller
-            name="password"
-            control={control}
-            defaultValue=""
-            render={({ field: { onChange, value }, fieldState: { error } }) => (
-              <TextField
-                label="Password"
-                variant="outlined"
-                value={value}
-                onChange={onChange}
-                error={!!error}
-                helperText={error ? error.message : null}
-                type="password"
-              />
-            )}
-            rules={{ required: "Password required" }}
-          />
-
-          <div>
-            <Button variant="contained" onClick={handleBack}>
-              Back
-            </Button>
-            <Button type="submit" variant="contained" color="primary">
-              Login
-            </Button>
-          </div>
+          <Button type="submit" variant="contained">
+            Login
+          </Button>
+          <Button variant="text" onClick={toRegister}>
+            No account? Create account here.
+          </Button>
         </Stack>
       </form>
     </Container>
