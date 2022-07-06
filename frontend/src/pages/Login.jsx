@@ -77,8 +77,18 @@ const Login = () => {
       />
       <form onSubmit={handleSubmit(onSubmit)}>
         <Stack spacing={2}>
-          <FormInput name={"email"} control={control} label={"Email"} />
-          <FormInput name={"password"} control={control} label={"Password"} />
+          <FormInput
+            name={"email"}
+            control={control}
+            label={"Email"}
+            type={"email"}
+          />
+          <FormInput
+            name={"password"}
+            control={control}
+            label={"Password"}
+            type={"password"}
+          />
 
           <Button type="submit" variant="contained">
             Login

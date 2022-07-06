@@ -91,12 +91,23 @@ const EmployeeRegister = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <Stack spacing={2}>
           <FormInput name={"name"} control={control} label={"Name"} />
-          <FormInput name={"email"} control={control} label={"Email"} />
-          <FormInput name={"password"} control={control} label={"Password"} />
+          <FormInput
+            name={"email"}
+            control={control}
+            label={"Email"}
+            type={"email"}
+          />
+          <FormInput
+            name={"password"}
+            control={control}
+            label={"Password"}
+            type={"password"}
+          />
           <FormInput
             name={"password2"}
             control={control}
             label={"Confirm Password"}
+            type={"password"}
           />
 
           <Button variant="contained" onClick={handleBack}>
