@@ -66,6 +66,10 @@ const Login = () => {
     navigate("/register");
   };
 
+  const toForgotPassword = () => {
+    navigate("/forget-password");
+  };
+
   return (
     <Container maxWidth={"md"}>
       <Snackbar
@@ -95,6 +99,9 @@ const Login = () => {
           </Button>
           <Button variant="text" onClick={toRegister}>
             No account? Create account here.
+          </Button>
+          <Button variant="text" onClick={toForgotPassword}>
+            Forgot password? Click here.
           </Button>
         </Stack>
       </form>

@@ -9,6 +9,8 @@ import LandingPage from "./pages/LandingPage";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import { useSelector } from "react-redux";
+import ForgetPassword from "./pages/ForgetPassword";
+import ResetPassword from "./pages/ResetPassword";
 
 function App() {
   const { user } = useSelector((state) => state.auth);
@@ -31,9 +33,11 @@ function App() {
             }
           />
           <Route path="/login" element={<Login />} />
+          <Route path="/forget-password" element={<ForgetPassword />} />
           <Route path="/register" element={<Register />} />
           <Route path="/register/employee" element={<EmployeeRegister />} />
           <Route path="/register/manager" element={<ManagerRegister />} />
+          <Route path="/api/users/reset/:token" element={<ResetPassword />} />
         </Routes>
       </Router>
     </>

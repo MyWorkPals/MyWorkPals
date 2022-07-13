@@ -43,6 +43,43 @@ export const login = createAsyncThunk("auth/login", async (user, thunkAPI) => {
   }
 });
 
+// Forget password
+export const forgetPassword = createAsyncThunk(
+  "auth/forgetPassword",
+  async (user, thunkAPI) => {
+    try {
+      return await authService.forgetPassword(user);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+// resetPw user
+export const resetPw = createAsyncThunk(
+  "auth/resetPw",
+  async (user, thunkAPI) => {
+    try {
+      return await authService.resetPw(user);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+// Logout user
 export const logout = createAsyncThunk("auth/logout", async () => {
   await authService.logout();
 });
@@ -87,6 +124,30 @@ export const authSlice = createSlice({
         state.isError = true;
         state.message = action.payload;
         state.user = null;
+      })
+      .addCase(forgetPassword.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(forgetPassword.fulfilled, (state, action) => {
+        state.isSuccess = true;
+        state.isLoading = false;
+      })
+      .addCase(forgetPassword.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(resetPw.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(resetPw.fulfilled, (state, action) => {
+        state.isSuccess = true;
+        state.isLoading = false;
+      })
+      .addCase(resetPw.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
       })
       .addCase(logout.fulfilled, (state) => {
         state.user = null;
