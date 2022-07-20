@@ -134,6 +134,7 @@
  *
  * this is how we are going to sort it:
  * i think we should either do mergesort or quicksort ( i think quicksort is the fastest right )
+ * what about the .sort() function thats in javascript? whats the sorting algorithm?
  * since we all know how to implement it i shall not write the pseudo code
  * the only thing what we going to use to compare 2 people because we have 2 criterias
  * we can either do:
@@ -162,4 +163,117 @@
  * }
  */
 
-function pseudo() {}
+// lets just do this assuming .sort() is fast and amazing and all i have to do is to
+// ok i just found out that it is fast and amazing
+// the algorithm is different for different types of arrays and differnt sizes of arrays and different browsers its on
+// so i think for consistency across all users, we should just use this cuz i assume that they will optimise their code
+
+const pseudo = asyncHandler(async (req, res) => {
+  // should the availability be sent in as a req.body or should it be obtained from in here
+  // create new empty schedule
+  const template = manager.scheduleTemplate.template;
+  let newSchedule = {
+    ...template,
+    start: Date,
+    end: Date,
+  }; // what other ways can we create a new schedule and how are we storing all the schedules every week for every user?
+
+  // sort the employees to the right order to insert them
+  const manager = await User.findOne({ email });
+  const employees = manager.employeeAvailability; // where will we be storing the employee availability that they key in weekly
+  employees.sort((a, b) => {
+    const rA = a.data.skills;
+    const aA = a.data.availability;
+    const rB = b.data.skills;
+    const aB = b.data.availability;
+
+    if (rA < rB) {
+      return -1;
+    } else if (rB < rA) {
+      return 1;
+    } else if (aA < aB) {
+      return -1;
+    } else if (aB < aA) {
+      return 1;
+    }
+    return 0;
+  });
+
+  // insert them into schedule
+  for (let employee of employees) {
+    const availability = employee.data.availability;
+    jQuery.each(template, (day, jsonOfShifts) => {
+      if (Object.keys(availability).includes(day)) {
+        for (shift in jsonOfShifts) {
+          if ("humanity checks out") {
+            if (
+              availability[day].start < shift.start &&
+              availability[day].end > shift.end
+            ) {
+              newSchedule[template][day][roles][role] = employee.key;
+            }
+          }
+          break;
+        }
+      }
+    });
+  }
+  // store into mongodb
+  await Schedule.create(newSchedule);
+
+  // send as response the schedule u stored
+  if (newSchedule) {
+    res.status(201).json(newSchedule);
+  } else {
+    res.status(400);
+    throw new Error("Invalid user data");
+  }
+});
+
+// this is so that when u first go in and there is no schedule in the mongodb, it will just render nothing but if have in the mongo then something will come out
+// so after you hit generate schedule right, the one you are seeing on the screen is the one returned in the response
+// but if you hit refresh, cuz it is stored into mongo on the first generate schedule, the same schedule u see on the screen is from mongodb
+
+var obj = [
+  {
+    key: "Clevon", // maybe this should be an user id instead, user id of the employee
+    data: {
+      availability: {
+        // how should we even record all of these? should we be doing like a calendar thing where they can pick date and time or just a + button then pick day and time
+        Tuesday: {
+          // what if they are available at 2 different times in the same day
+          start: "22:30",
+          end: Date,
+        },
+        Wednesday: {
+          start: Date,
+          end: Date,
+        },
+      },
+      skills: [cashier, waiter, cleaner],
+    },
+  },
+  { key: "Nasti", data: {} },
+  { key: "Nelson", data: {} },
+];
+
+let scheTemplate = {
+  template: {
+    Monday: {
+      shift0: {
+        start: Date,
+        end: Date,
+        rolesNeeded: {
+          cashier: 1,
+          waiter: 2,
+          chef: 1,
+        },
+      },
+      shift1: {},
+    },
+    Tuesday: {},
+    Thursday: {},
+    Friday: {},
+  },
+  "like here is extra info or something": {},
+};
