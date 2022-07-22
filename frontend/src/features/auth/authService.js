@@ -24,6 +24,28 @@ const login = async (userData) => {
   return response.data;
 };
 
+// Forget password
+const forgetPassword = async (userData) => {
+  const response = await axios.post(API_URL + "forgetPassword", userData);
+  return response.data;
+};
+
+// Reset pasword
+const authenticateResetPassword = async (token) => {
+  const response = await axios.get(API_URL + "reset/" + token);
+  return response.data;
+};
+
+// reset password for user
+const resetPw = async (userData) => {
+  const response = await axios.patch(
+    API_URL + "updatePasswordViaEmail",
+    userData
+  );
+
+  return response.data;
+};
+
 // Logout user
 const logout = () => {
   localStorage.removeItem("user");
@@ -33,6 +55,9 @@ const authService = {
   register,
   logout,
   login,
+  forgetPassword,
+  authenticateResetPassword,
+  resetPw,
 };
 
 export default authService;
