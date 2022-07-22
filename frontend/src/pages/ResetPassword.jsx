@@ -22,6 +22,31 @@ const ResetPassword = () => {
   const { updatedUser, isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.auth
   );
+
+  const [snackbarState, setSnackbarState] = useState({
+    open: false,
+    vertical: "top",
+    horizontal: "center",
+    snackbarMessage: "",
+  });
+
+  const { vertical, horizontal, open, snackbarMessage } = snackbarState;
+
+  const openSnackbar = (newState) => {
+    setSnackbarState({
+      open: true,
+      ...newState,
+    });
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setSnackbarState({ ...snackbarState, open: false });
+  };
+
   const {
     user,
     isErrorResetAuth,
@@ -34,14 +59,19 @@ const ResetPassword = () => {
 
   const onSubmit = (data) => {
     if (data.password === data.password2) {
-      console.log(user);
       const formData = {
-        userId: user.data_id,
+        userId: user.data._id,
         password: data.password,
         password2: data.password2,
       };
 
       dispatch(resetPw(formData));
+    } else {
+      openSnackbar({
+        vertical: "bottom",
+        horizontal: "center",
+        snackbarMessage: "Passwords do not match!",
+      });
     }
   };
 
@@ -57,20 +87,37 @@ const ResetPassword = () => {
   useEffect(() => {
     dispatch(authenticateResetPassword(token));
 
+    if (isError || isErrorResetAuth) {
+      openSnackbar({
+        vertical: "bottom",
+        horizontal: "center",
+        snackbarMessage: message,
+      });
+    }
+
+    if (isSuccess) {
+      openSnackbar({
+        vertical: "bottom",
+        horizontal: "center",
+        snackbarMessage:
+          "Password reset successfully! Try logging in with your new password!",
+      });
+    }
+
     return () => {
       dispatch(resetResetPwAuth());
     };
-  }, []);
+  }, [dispatch, isSuccess]);
 
   return (
     <Container maxWidth={"md"}>
-      {/* <Snackbar
+      <Snackbar
         anchorOrigin={{ vertical, horizontal }}
         open={open}
         onClose={handleClose}
         message={snackbarMessage}
         key={vertical + horizontal}
-      /> */}
+      />
       <Typography gutterBottom variant="h5" component="div">
         Reset Password
       </Typography>

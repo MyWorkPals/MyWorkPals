@@ -61,10 +61,11 @@ const loginUser = asyncHandler(async (req, res) => {
   const user = await User.findOne({ email });
 
   if (user && (await bcrypt.compare(password, user.password))) {
-    res.json({
+    res.status(201).json({
       _id: user.id,
       name: user.name,
       email: user.email,
+      role: user.role,
       token: generateToken(user._id),
     });
   } else {
@@ -109,6 +110,8 @@ const forgetPassword = asyncHandler(async (req, res) => {
       },
     }
   );
+
+  console.log(user);
 
   if (!user) {
     res.status(400);
@@ -161,7 +164,8 @@ const authenticateResetPassword = asyncHandler(async (req, res) => {
 
   if (!user) {
     console.log("password reset link is invalid or has expired");
-    res.status(400).send("password reset link is invalid or has expired");
+    res.status(400);
+    throw new Error("Password reset link is invalid or has expired");
   } else {
     console.log("password reset link authenticated");
     res.status(200).send({ data: user });

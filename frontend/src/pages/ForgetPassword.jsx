@@ -19,23 +19,64 @@ const ForgetPassword = () => {
     (state) => state.auth
   );
 
+  const [snackbarState, setSnackbarState] = useState({
+    open: false,
+    vertical: "top",
+    horizontal: "center",
+    snackbarMessage: "",
+  });
+
+  const { vertical, horizontal, open, snackbarMessage } = snackbarState;
+
+  const openSnackbar = (newState) => {
+    setSnackbarState({
+      open: true,
+      ...newState,
+    });
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setSnackbarState({ ...snackbarState, open: false });
+  };
+
   const onSubmit = (data) => {
     dispatch(forgetPassword(data));
   };
 
   useEffect(() => {
+    if (isError) {
+      openSnackbar({
+        vertical: "bottom",
+        horizontal: "center",
+        snackbarMessage: message,
+      });
+    }
+
+    if (isSuccess) {
+      openSnackbar({
+        vertical: "bottom",
+        horizontal: "center",
+        snackbarMessage:
+          "Recovery email sent! Use the link in the email to reset your password!",
+      });
+    }
+
     dispatch(reset());
-  }, [dispatch]);
+  }, [dispatch, isError, isSuccess, openSnackbar]);
 
   return (
     <Container maxWidth={"md"}>
-      {/* <Snackbar
+      <Snackbar
         anchorOrigin={{ vertical, horizontal }}
         open={open}
         onClose={handleClose}
         message={snackbarMessage}
         key={vertical + horizontal}
-      /> */}
+      />
       <Typography gutterBottom variant="h5" component="div">
         Forget Password
       </Typography>
